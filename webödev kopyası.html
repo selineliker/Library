@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basit Hesap Makinesi</title>
+    <style>
+        .divim {
+            background-color: #ccccff;
+            width: 100%;
+        }
+
+        .button button {
+            border-radius: 12px;
+            background-color: #33ccff;
+            color: black;
+        }
+
+        .sonuc {
+            background-color: #ccccff;
+        }
+
+        .metin{
+            color: black; 
+
+        }
+
+        .metin:hover{
+            color: #ff99ff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <p style="text-align: center;background-color: #33ccff;">HESAP MAKİNESİ</p>
+</div>
+<div>
+    <form id="calculatorForm">
+        <table class="divim">
+            <tr>
+                <td>İşleme Sokulacak İlk Sayı:</td>
+                <td><input id="firstNumber" type="number"></td>
+            </tr>
+            <tr>
+                <td>İşleme Sokulacak İkinci Sayı:</td>
+                <td><input id="secondNumber" type="number"></td>
+            </tr>
+        </table>
+        <table class="divim">
+            <tr>
+                <td>Yapmak istediğiniz işlem:</td>
+                <td class="button"><button id="addButton" type="button">Toplama</button></td>
+                <td class="button"><button id="subtractButton" type="button">Çıkarma</button></td>
+                <td class="button"><button id="multiplyButton" type="button">Çarpma</button></td>
+                <td class="button"><button id="divideButton" type="button">Bölme</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div class="sonuc">
+    <table>
+        <tr>
+            <td>Sonucunuz:</td>
+            <td><span id="sonuc">0</span></td>
+        </tr>
+    </table>
+</div>
+<br><br><br>
+<p style="text-align: center;background-color: #33ccff;">SAYAÇ</p>
+<div style="background-color: #009933;;border-radius: 15px;">
+    <h1 id="counter">0</h1> 
+
+
+    <button onclick="incrementCounter()" style="border-radius: 12px;">Arttır</button>
+    <button onclick="decrementCounter()" style="border-radius: 12px;">Azalt</button>
+</div>
+
+<p style="text-align: center;background-color: #33ccff;">SAYFA YAZARININ BİLGİLERİ</p>
+<div>
+    <p class="metin" onmouseover="degistir('Selin')">Ad:</p>
+    <p class="metin" onmouseover="degistir('Çeliker')">Soyad:</p>
+    <p class="metin" onmouseover="degistir('Bilgisayar Mühendisliği')">Bölüm:</p>
+    <p class="metin" onmouseover="degistir('1. sınıf')">Sınıf:</p>
+</div>
+
+
+
+
+<script src="webödev.js"></script>
+
+
+</body>
+</html>
+
+
+
