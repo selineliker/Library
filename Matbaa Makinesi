@@ -1,0 +1,62 @@
+#MATBAA MAKİNESİ
+
+#mürekkebi,şarjı gibi olaylar olacak
+#her 20 çalışmada bir dergi ortaya çıkacak
+#henüz yeni dergi çıkmadıysa yüzde kaçının tamamlandığı gösterilecek
+#yeni dergi çıktığında ona isim verilebilecek
+
+import time
+
+class makine():
+    def __init__(self,isim):
+        self.isim=isim
+        self.şarj=100
+        self.mürekkep=100
+        self.devir=0
+        self.dergiler=[]
+
+    def çalış(self):
+        self.şarj -= 6
+        self.mürekkep -= 3
+        while self.şarj<6:
+            print("yeterli şarj yok,dolum yapmak ister misiniz?")
+            cevap=input("cevap:")
+            if cevap=="evet":
+                self.şarj=100
+                print("Doluyor...")
+                time.sleep(2)
+
+        while self.mürekkep<3:
+            print("yeterli mürekkep yok,dolum yapmak ister misiniz?")
+            cevap=input("cevap:")
+            if cevap=="evet":
+                self.mürekkep=100
+                print("Doluyor...")
+                time.sleep(2)
+        self.devir += 1
+
+
+        if self.devir == 20:
+            dergi=input("Biten derginin ismi:")
+            self.dergiler.append(dergi)
+            self.devir = 0
+
+
+    def durumbilgisi(self):
+        if len(self.dergiler) == 0:
+            print("Derginin yüzde", self.devir*5, "kısmı tamamlandı")
+            print("şarj:", self.şarj)
+            print("mürekkep:", self.mürekkep)
+            print("dergiler:", self.dergiler)
+        else:
+            print("şarj:",self.şarj)
+            print("mürekkep:",self.mürekkep)
+            print("dergiler:",self.dergiler)
+
+makine1=makine("makine1")
+
+n=int(input("makine kaç kere çalışsın?"))
+while n>0:
+    makine1.çalış()
+    n-=1
+makine1.durumbilgisi()
