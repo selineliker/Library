@@ -1,0 +1,454 @@
+import cv2
+import numpy as np
+#OpenCV görüntü işleme fonksiyonlarını sağlarken, NumPy görüntüleri diziler halinde düzenlemek için kullanılır.
+print("Package is imported")
+
+#FOTO GÖRÜNTÜLEME
+"""
+img=cv2.imread("opencv/lena.png")
+cv2.imshow("Output",img)
+cv2.waitKey(0)  # Bir tuşa basılmasını bekler
+#cv2.destroyAllWindows()  # Açılan tüm pencereleri kapatır
+"""
+#VİDEO GÖRÜNTÜLEME
+"""
+cap=cv2.VideoCapture("opencv/test_video.mp4")
+
+while True:
+    success,img=cap.read()
+    cv2.imshow("video",img)
+    if cv2.waitKey(1)& 0xFF==ord("q"):
+        break
+     
+#Python'da cv2.waitKey(1), klavyeden basılan tuşun 
+#bir ASCII kodunu döndürür (örneğin, 'q' harfi için 
+#bu sayı 113). Ancak cv2.waitKey(1) her bilgisayarda 
+#farklı sonuçlar döndürebileceğinden, sonuçları tutarlı
+#hale getirmek için & 0xFF ifadesi kullanılır.
+
+"""
+#CANLI GÖRÜNTÜ KAMERA AÇMA
+"""
+cap=cv2.VideoCapture(0)
+cap.set(3,640)#GENİŞLİK AYARI
+cap.set(4,480)#YÜKSEKLİK AYARI
+cap.set(10,100)# PARLAKLIK AYARI
+
+while True:
+    success,img=cap.read()
+    cv2.imshow("video",img)
+    if cv2.waitKey(1)& 0xFF==ord("q"):
+        break
+"""
+#GÖRÜNTÜYÜ BULANIKLAŞTIRMA VE GRİ YAPMA
+"""
+img=cv2.imread("opencv/lena.png")
+imgGray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+imgBlur=cv2.GaussianBlur(imgGray,(7,7),0)
+cv2.imshow("Grayİmage",imgGray)
+cv2.imshow("Blurİmage",imgBlur)
+
+cv2.waitKey(0)  # Bir tuşa basılmasını bekler
+
+#0, otomatik olarak sigma (standart sapma) değerini hesaplar.
+#Bu, daha doğal bir bulanıklaştırma sağlar.
+
+#cv2.GaussianBlur() fonksiyonu, görüntüyü bulanıklaştırmak
+#için kullanılır. Burada (7, 7) parametresi, bulanıklaştırma
+#için kullanılan çekirdek boyutunu belirtir (çekirdek boyutu
+#her zaman tek sayılı olmalıdır ve sayı büyüdükçe bulanıklaştırma artar).
+"""
+#Canny,görüntüdeki kenarları ortaya çıkarır
+"""
+img=cv2.imread("opencv/lena.png")
+imgGray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+imgBlur=cv2.GaussianBlur(imgGray,(7,7),0)
+imgCanny=cv2.Canny(img,100,100)
+
+#Kontrast, bir görüntüdeki en koyu ve en açık alanlar arasındaki fark anlamına gelir.
+
+cv2.imshow("Grayİmage",imgGray)
+cv2.imshow("Blurİmage",imgBlur)
+cv2.imshow("Cannyİmage",imgCanny)
+
+cv2.waitKey(0)  # Bir tuşa basılmasını bekler
+"""
+#Dilate ve Erode işlemleri, kenarları kalınlaştırmak veya inceltmek için sırasıyla uygulanır
+"""
+img=cv2.imread("opencv/lena.png")
+kernel=np.ones((5,5),np.uint8)
+
+imgGray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+imgBlur=cv2.GaussianBlur(imgGray,(7,7),0)
+imgCanny=cv2.Canny(img,100,100)
+imgDialation=cv2.dilate(imgCanny,kernel,iterations=1)
+imgEroded=cv2.erode(imgDialation,kernel,iterations=1)
+
+#Canny ile algılanan kenarları kalınlaştırmak için dilatasyon
+#işlemi uygular. iterations=1, işlemin bir kez uygulanacağı
+#anlamına gelir. Bu, kenarların daha belirgin hale gelmesini sağlar.
+
+
+
+cv2.imshow("Grayİmage",imgGray)
+cv2.imshow("Blurİmage",imgBlur)
+cv2.imshow("Cannyİmage",imgCanny)
+cv2.imshow("Dialationİmage",imgDialation)
+cv2.imshow("Erodedİmage",imgEroded)
+
+#Grayscale ve Gaussian Blur, görüntüyü daha sade hale getirir, gürültüyü azaltır.
+#Canny Edge Detection, görüntüdeki kenarları ortaya çıkarır.
+#Dilate ve Erode işlemleri, kenarları kalınlaştırmak veya inceltmek için sırasıyla uygulanır,
+#bu da kenarları daha belirgin ya da daha net yapar.
+
+cv2.waitKey(0)  # Bir tuşa basılmasını bekler
+"""
+#RESMİ KIRPMA
+"""
+img=cv2.imread("opencv/lambo.png")
+print(img.shape)#width,height,BGR verir
+imgResize=cv2.resize(img,(720,400))#önce width
+imgCropped=img[0:200,200:500]#önce height
+
+
+cv2.imshow("Output",img)
+cv2.imshow("Resized Image",imgResize)
+cv2.imshow("Cropped Image",imgCropped)
+cv2.waitKey(0)
+"""
+#BOŞ SİYAH EKRAN OLUŞTURMA
+"""
+img=np.zeros((512,512,3),np.uint8)
+#img[:]=0,0,255
+img[200:300,200:300]=0,0,255
+cv2.imshow("Image",img)
+cv2.waitKey(0)
+"""
+#EKRANA GEOMETRİK ÇİZİMLER
+"""
+img=np.zeros((512,512,3),np.uint8)
+cv2.line(img,(0,50),(100,300),(0,255,0),3)##yükseklik,genişlik koordinatları,renk,kalınlık
+cv2.line(img,(0,0),(img.shape[1],img.shape[0]),(0,255,0),3)
+cv2.rectangle(img,(0,0),(200,300),(0,0,255),cv2.FILLED)
+cv2.circle(img,(400,50),30,(200,255,155),5)#merkez koordinatı,yarıçap,renk,kalınlık
+cv2.putText(img,"OPENCV",(200,300),cv2.FONT_HERSHEY_COMPLEX,1,(0,150,0),1)#içerik,başlangıç koordinatı,yazı tipi,boyut,renk,kalınlık
+
+cv2.imshow("Image",img)
+
+cv2.waitKey(0)
+ """
+#perspektif dönüşüm matrisi hesaplaMA
+"""
+width,height=204,247
+img=cv2.imread("opencv/cards.jpg")
+pts1=np.float32([[146,32],[242,58],[103,171],[203,199]])
+pts2=np.float32([[0,0],[width,0],[0,height],[width,height]])
+matrix=cv2.getPerspectiveTransform(pts1,pts2)
+imgOutput=cv2.warpPerspective(img,matrix,(width,height))
+
+#cv2.getPerspectiveTransform() fonksiyonu, pts1 ve pts2 noktaları
+#arasında perspektif dönüşüm matrisi hesaplar.
+
+#cv2.warpPerspective() fonksiyonu, yukarıda hesaplanan matrix dönüşümünü
+#img görüntüsüne uygular.
+
+#pts1, orijinal görüntüdeki dört köşenin koordinatlarını temsil eder.
+#pts2, dönüşümden sonra elde edilmesi planlanan çıktı görüntüsünün dört köşesini temsil eder.
+
+
+cv2.imshow("Image",img)
+cv2.imshow("Output",imgOutput)
+cv2.waitKey(0)
+
+"""
+#YATAY VE DİKEY FOTO BİRLEŞTİRME
+"""
+img=cv2.imread("opencv/lena.png")
+imgHor=np.hstack((img,img))#her iki fotonun da aynı kanala sahip olması gerekir
+imgVer=np.vstack((img,img))
+cv2.imshow("Horizontal",imgHor)
+cv2.imshow("Vertical",imgVer)
+cv2.waitKey(0)
+"""
+#BELLİ ÖLÇEKLERLE VE ŞEKİLLERLE FOTO BİRLEŞTİRME
+"""
+import cv2
+import numpy as np
+
+def stackImages(scale, imgArray):
+    # Resimlerin boyutunu ayarla
+    rows = len(imgArray)
+    cols = len(imgArray[0])
+
+    # İlk resmi al ve scale faktörü ile boyutlandır
+    width = int(imgArray[0][0].shape[1] * scale)
+    height = int(imgArray[0][0].shape[0] * scale)
+
+    # Birleştirilmiş görüntü için boş bir dizi oluştur
+    stackedImg = np.zeros((height * rows, width * cols, 3), np.uint8)
+
+    # Görüntüleri yerleştir
+    for i in range(rows):
+        for j in range(cols):
+            # Görüntüyü yeniden boyutlandır ve scale faktörünü uygula
+            resized_img = cv2.resize(imgArray[i][j], (width, height))
+            stackedImg[i * height:i * height + height, j * width:j * width + width] = resized_img
+
+    return stackedImg
+
+# Görüntüleri yükle
+img1 = cv2.imread("opencv/lena.png")
+img2 = cv2.imread("opencv/lena.png")
+
+# Görüntü dizisi oluştur
+imgArray = [[img1, img2], [img2, img1]]
+
+# Stack yap
+imgStack = stackImages(0.5, [[img1, img1, img1]])
+imgStack1 = stackImages(0.3, [[img1, img1, img1]])
+imgStack2 = stackImages(1, [[img1], [img1], [img1]])
+imgStack3 = stackImages(0.5, [[img1, img1], [img1, img1], [img1, img1]])
+
+# Görüntüyü göster
+cv2.imshow("Stacked", imgStack)
+cv2.imshow("Stacked1", imgStack1)
+cv2.imshow("Stacked2", imgStack2)
+cv2.imshow("Stacked3", imgStack3)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+"""
+#TRACKBARS
+"""
+def empty(a):
+    pass
+def stackImages(scale, imgArray):
+    # Resimlerin boyutunu ayarla
+    rows = len(imgArray)
+    cols = len(imgArray[0])
+
+    # İlk resmi al ve scale faktörü ile boyutlandır
+    width = int(imgArray[0][0].shape[1] * scale)
+    height = int(imgArray[0][0].shape[0] * scale)
+
+    # Birleştirilmiş görüntü için boş bir dizi oluştur
+    stackedImg = np.zeros((height * rows, width * cols, 3), np.uint8)
+
+    # Görüntüleri yerleştir
+    for i in range(rows):
+        for j in range(cols):
+            # Görüntüyü yeniden boyutlandır ve scale faktörünü uygula
+            resized_img = cv2.resize(imgArray[i][j], (width, height))
+            stackedImg[i * height:i * height + height, j * width:j * width + width] = resized_img
+
+    return stackedImg
+
+
+cv2.namedWindow("TrackBars")
+cv2.resizeWindow("TrackBars",900,100)
+cv2.createTrackbar("Hue Min","TrackBars",0,179,empty)
+cv2.createTrackbar("Hue Max","TrackBars",178,179,empty)
+cv2.createTrackbar("Saturation Min","TrackBars",178,255,empty)
+cv2.createTrackbar("Saturation Max","TrackBars",255,255,empty)
+cv2.createTrackbar("Value Min","TrackBars",0,255,empty)
+cv2.createTrackbar("Value Max","TrackBars",255,255,empty)
+
+while True:
+    path = cv2.imread("opencv/lambo.png")
+    imgHSV = cv2.cvtColor(path, cv2.COLOR_BGR2HSV)
+    h_min = cv2.getTrackbarPos("Hue Min", "TrackBars")
+    h_max = cv2.getTrackbarPos("Hue Max", "TrackBars")
+    s_min = cv2.getTrackbarPos("Saturation Min", "TrackBars")
+    s_max = cv2.getTrackbarPos("Saturation Max", "TrackBars")
+    v_min = cv2.getTrackbarPos("Value Min", "TrackBars")
+    v_max = cv2.getTrackbarPos("Value Max", "TrackBars")
+
+    print([h_min,s_min,v_min],[h_max,s_max,v_max])
+    lower=np.array([h_min,s_min,v_min])
+    upper=np.array([h_max,s_max,v_max])
+    mask=cv2.inRange(imgHSV,lower,upper)
+    imgResult=cv2.bitwise_and(path,path,mask=mask)
+    mask_colored = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+
+    #cv2.imshow("Output",imgHSV)
+    #cv2.imshow("Masked",mask)
+    #cv2.imshow("Result",imgResult)
+
+    imgStack=stackImages(0.6,([path,imgHSV],[mask_colored,imgResult]))
+    cv2.imshow("Stacked İmages",imgStack)
+
+    cv2.waitKey(1)
+"""
+"""
+HSV, renklerin tanımlanmasında kullanılan bir renk modelidir ve Hue, Saturation ve Value kelimelerinin baş harflerinden oluşur. Bu model, renkleri daha sezgisel bir biçimde tanımlamak için RGB modeline alternatif olarak geliştirilmiştir. HSV'nin her bir bileşeni şunları ifade eder:
+
+Hue (Ton):
+
+Renk tonunu temsil eder ve genellikle 0° ile 360° arasında bir açıyla ifade edilir.
+Örneğin, 0° kırmızı, 120° yeşil ve 240° mavi renk tonlarını temsil eder.
+Bu bileşen, rengin kendisini belirtir.
+
+Saturation (Doygunluk):
+
+Rengin yoğunluğunu ifade eder. Doygunluk değeri 0 ile 100 arasında bir yüzde olarak tanımlanır.
+Doygunluğu düşük olan bir renk, griye daha yakın görünürken, yüksek doygunluk değerine sahip bir renk daha canlı görünür.
+Örneğin, %0 doygunluk, tamamen gri bir rengi temsil ederken, %100 doygunluk tam ve saf bir rengi temsil eder.
+
+Value (Değer / Aydınlık):
+
+Rengin parlaklığını ifade eder. Değer de 0 ile 100 arasında bir yüzde ile ifade edilir.
+0 değeri tamamen karanlık (siyah), 100 değeri ise tamamen aydınlık (beyaz) bir rengi temsil eder.
+
+"""
+#GEOMETRİK ŞEKİLLERİN ÇALIŞMASI
+"""
+import cv2
+import numpy as np
+
+#cv2.findContours fonksiyonu, bir görüntüdeki konturları (şekil kenarlarını)
+#bulmak için kullanılır. Konturlar, bir görüntüdeki nesnelerin sınırlarını
+#temsil eder.
+
+def stackImages(scale, imgArray):
+    # Resimlerin boyutunu ayarla
+    rows = len(imgArray)
+    cols = len(imgArray[0])
+
+    # İlk resimden genişlik ve yükseklik değerlerini al ve scale faktörü ile boyutlandır
+    width = int(imgArray[0][0].shape[1] * scale)
+    height = int(imgArray[0][0].shape[0] * scale)
+
+    # Birleştirilmiş görüntü için boş bir dizi oluştur
+    stackedImg = np.zeros((height * rows, width * cols, 3), np.uint8)
+
+    # Görüntüleri yerleştir
+    for i in range(rows):
+        for j in range(cols):
+            # Gri tonlamalı görüntüyü BGR formatına çevir
+            if len(imgArray[i][j].shape) == 2:
+                imgArray[i][j] = cv2.cvtColor(imgArray[i][j], cv2.COLOR_GRAY2BGR)
+            # Görüntüyü yeniden boyutlandır ve scale faktörünü uygula
+            resized_img = cv2.resize(imgArray[i][j], (width, height))
+            stackedImg[i * height:i * height + height, j * width:j * width + width] = resized_img
+
+    return stackedImg
+def getContour(img):
+    contours,hierarchy=cv2.findContours(img,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+    for cnt in contours:
+        area=cv2.contourArea(cnt)
+        print(area)
+        if area>100:
+            cv2.drawContours(imgContour, cnt, -1, (255, 0, 0), 1)
+            peri=cv2.arcLength(cnt,True)
+            print(peri)
+            approx=cv2.approxPolyDP(cnt,0.02*peri,True)
+            print(len(approx))
+            objcor=len(approx)
+            x,y,w,h=cv2.boundingRect(approx)
+
+            if objcor==3:objectType="Tri"
+            elif objcor==4:
+                aspRatio=w/float(h)
+                if aspRatio>0.95 and aspRatio<1.05:objectType="Square"
+                else:objectType="Rectangle"
+            elif objcor>4:objectType="Circle"
+
+            else:objectType="None"
+
+            cv2.rectangle(imgContour,(x,y),(x+w,y+h),(0,255,0),1)
+            cv2.putText(imgContour,objectType,(x+(w//2)-10,y+(h//2)-10),cv2.FONT_HERSHEY_COMPLEX,0.5,(0,0,0),1)
+
+
+
+#Küçük ve gereksiz konturların çizilmesini önlemek için bir filtre görevi görür.
+# Bu, daha belirgin ve anlamlı konturların vurgulanmasını sağlar.
+
+
+
+path = "opencv/shapes.jpg"
+img = cv2.imread(path)
+imgContour=img.copy()
+imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+imgBlur = cv2.GaussianBlur(imgGray, (7, 7), 1)
+imgCanny=cv2.Canny(imgBlur,50,50)
+getContour(imgCanny)
+
+#np.zeros_like(img), img dizisinin boyutlarını ve veri tipini
+#otomatik olarak alır. Bu sayede, ekstra parametre tanımlamadan
+#img ile aynı özelliklerde bir sıfır matrisi oluşturulmuş olur.
+#np.zeros(img.shape, dtype=img.dtype) kullanmak yerine daha kısa
+#ve okunabilir bir alternatif sağlar.
+
+imgBlank=np.zeros_like(img)
+imgStack = stackImages(1.3, [[img, imgGray, imgBlur],[imgCanny, imgContour, imgBlank]])
+
+cv2.imshow("Stack", imgStack)
+cv2.waitKey(0)
+
+"""
+"""
+contours, hierarchy = cv2.findContours(image, mode, method)
+Parametreler
+image:
+
+Tanım: Konturların bulunacağı girdi görüntüsüdür.
+Açıklama: Bu parametre, genellikle gri tonlamalı (single channel) bir görüntü olmalıdır. Konturlar genellikle kenar tespit algoritmaları (örneğin, Canny) uygulanmış bir görüntüde bulunur. Fonksiyon, bu görüntüdeki beyaz (255) piksel değerlerinin konturlarını bulur.
+mode:
+
+Tanım: Konturların nasıl alınacağını belirleyen mod parametresidir.
+Açıklama: Bu parametre, hangi konturların alınacağını belirler ve çeşitli modlar içerir. İki temel mod:
+cv2.RETR_EXTERNAL: Sadece dış konturları bulur. Yani, daha içteki konturlar (bir nesnenin içindeki konturlar) dikkate alınmaz. Genellikle, bir nesnenin dış sınırını almak için kullanılır.
+cv2.RETR_LIST: Tüm konturları bulur ama hiyerarşik bir ilişki oluşturmaz.
+cv2.RETR_TREE: Tüm konturları bulur ve bir hiyerarşi oluşturur; dış konturlar ve iç konturlar arasındaki ilişkileri belirtir.
+method:
+
+Tanım: Konturların temsil yöntemini belirleyen parametre.
+Açıklama: Bu parametre, konturların nasıl yaklaşıklandırılacağını belirler. İki temel yöntem:
+cv2.CHAIN_APPROX_NONE: Tüm kontur noktalarını alır. Yani, her bir kontur noktasını saklar. Bu, konturun tam bir temsilini sağlar ama bellek açısından verimsiz olabilir.
+cv2.CHAIN_APPROX_SIMPLE: Kontur noktasını basitleştirir ve yalnızca konturun köşe noktalarını saklar. Örneğin, bir dikdörtgenin kenarları arasında saklanacak tüm noktalar yerine, yalnızca köşe noktaları saklanır. Bu, daha az bellek kullanımı sağlar.
+Dönüş Değerleri
+contours:
+
+Tanım: Bulunan konturların bir listesidir.
+Açıklama: Her bir kontur, bir NumPy dizisi olarak temsil edilir ve bu dizi, kontur boyunca bulunan piksel koordinatlarını içerir. Konturlar, çokgen noktalar olarak saklanır ve nesnelerin kenarlarını tanımlamak için kullanılır.
+hierarchy:
+
+Tanım: Konturların hiyerarşik yapısını belirten bir dizi.
+Açıklama: Eğer cv2.RETR_TREE modu kullanılmışsa, bu dizi her bir konturun hangi diğer konturlarla ilişkili olduğunu belirtir. Konturlar arasında bir iç içe geçmişlik ilişkisi vardır. Bu dizi, dört değer içeren bir dizi olarak döner: [Next, Previous, First Child, Parent]. Bu şekilde, konturların hiyerarşisi hakkında bilgi alabilirsiniz.
+
+"""
+"""peri = cv2.arcLength(cnt, True)
+
+Açıklama: Bu satır, konturun çevresini (perimeter) hesaplar. cv2.arcLength fonksiyonu, kontur noktalarının uzunluğunu döner. İkinci parametre True olduğunda, konturun kapalı olup olmadığını belirtir.
+Amaç: Konturun çevresini hesaplamak, şeklin boyutları hakkında daha fazla bilgi edinmemizi sağlar. Bu, konturun karmaşıklığını veya düzlüğünü değerlendirmek için kullanılabilir.
+print(peri)
+
+Açıklama: Hesaplanan çevre değerini konsola yazdırır. Bu, konturun uzunluğunu görsel olarak kontrol etmenizi sağlar.
+approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
+
+Açıklama: Bu satır, konturun yaklaşık bir poligon şeklinde temsilini oluşturur. cv2.approxPolyDP fonksiyonu, konturun daha az noktayla temsil edilmesini sağlar. Bu, şeklin basitleştirilmesi için kullanılır. İkinci parametre, düzleştirme miktarını belirler; burada, çevrenin %2'si kadar bir hata payı ile basitleştirilmiştir.
+Amaç: Konturun karmaşık yapısını azaltarak, onun daha basit ve daha az sayıda kenara sahip bir poligon olarak temsil edilmesini sağlar. Bu, şeklin analizi için faydalıdır.
+print(approx)
+
+Açıklama: Yaklaşık poligonun köşe noktalarını (nokta dizisi) konsola yazdırır. Bu, konturun daha basitleştirilmiş bir temsilini görselleştirmek için faydalıdır."""
+#FOTODA YÜZLERİ BELİRLEME
+"""
+import cv2
+faceCascade=cv2.CascadeClassifier("opencv/haarcascade_frontalface_default.xml")
+img=cv2.imread("opencv/lena.png")
+imgGray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
+#cv2.CascadeClassifier(...): Bu satır, OpenCV'nin önceden eğitilmiş bir yüz
+#tanıma modelini yükler. haarcascade_frontalface_default.xml, yüz tanıma için
+#popüler bir Haar kaskad sınıflandırıcısıdır.
+
+
+faces=faceCascade.detectMultiScale(imgGray,1.1,4)
+
+for (x,y,w,h) in faces:
+    cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+
+cv2.imshow("Result",img)
+cv2.waitKey(0)
+"""
